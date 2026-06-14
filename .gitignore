@@ -59,3 +59,7 @@ nunit-*.xml
 # Rust
 **/target/
 Cargo.lock
+
+**/.vs/*
+**/.vscode/*
+**/.idea/*
