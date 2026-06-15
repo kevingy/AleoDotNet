@@ -67,19 +67,95 @@ Copilot should treat this repository as a **long‑term, multi‑layer ecosystem
 
 ## 3. Repository Structure
 
-AleoDotNet/
-rust-engine/
-src/
-Aleo.Primitives/
-Aleo.Crypto/
-Aleo.Rpc/
-Aleo.Wallet/
-Aleo.Sdk/
-tests/
-Aleo.Tests/
-.github/
-README.md
-LICENSE
+aleo-dotnet-sdk/
+│
+├── src/
+│   ├── Aleo.Primitives/
+│   │   ├── Address.cs
+│   │   ├── PrivateKey.cs
+│   │   ├── ViewKey.cs
+│   │   ├── Record.cs
+│   │   ├── Transaction.cs
+│   │   └── Aleo.Primitives.csproj
+│   │
+│   ├── Aleo.Crypto/
+│   │   ├── IAleoCryptoEngine.cs
+│   │   ├── RustAleoCryptoEngine.cs
+│   │   ├── NativeMethods.cs
+│   │   ├── Interop/
+│   │   │   ├── aleo_dotnet_engine.h
+│   │   │   ├── win-x64/
+│   │   │   │   └── aleo_dotnet_engine.dll
+│   │   │   ├── linux-x64/
+│   │   │   │   └── libaleo_dotnet_engine.so
+│   │   │   └── osx-arm64/
+│   │   │       └── libaleo_dotnet_engine.dylib
+│   │   └── Aleo.Crypto.csproj
+│   │
+│   ├── Aleo.Rpc/
+│   │   ├── IAleoRpcClient.cs
+│   │   ├── AleoRpcClient.cs
+│   │   ├── Models/
+│   │   │   ├── Block.cs
+│   │   │   ├── RpcRecord.cs
+│   │   │   ├── RpcTransaction.cs
+│   │   │   └── RpcError.cs
+│   │   └── Aleo.Rpc.csproj
+│   │
+│   ├── Aleo.Wallet/
+│   │   ├── AleoWallet.cs
+│   │   ├── WalletConfig.cs
+│   │   ├── WalletFactory.cs
+│   │   └── Aleo.Wallet.csproj
+│   │
+│   ├── Aleo.Sdk/
+│   │   ├── AleoSdk.cs
+│   │   ├── AleoConfig.cs
+│   │   ├── DependencyInjection.cs
+│   │   └── Aleo.Sdk.csproj
+│   │
+│   └── Directory.Build.props
+│
+├── rust-engine/
+│   ├── Cargo.toml
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── keygen.rs
+│   │   ├── address.rs
+│   │   ├── transfer.rs
+│   │   └── errors.rs
+│   └── build.sh
+│
+├── tests/
+│   ├── Aleo.Primitives.Tests/
+│   ├── Aleo.Crypto.Tests/
+│   ├── Aleo.Rpc.Tests/
+│   ├── Aleo.Wallet.Tests/
+│   └── Aleo.Sdk.Tests/
+│
+├── samples/
+│   ├── ConsoleWallet/
+│   │   ├── Program.cs
+│   │   └── ConsoleWallet.csproj
+│   └── WebApiDemo/  (optional)
+│
+├── docs/
+│   ├── getting-started.md
+│   ├── architecture.md
+│   ├── rpc-reference.md
+│   ├── crypto-engine.md
+│   └── wallet-guide.md
+│
+├── .github/
+│   ├── workflows/
+│   │   ├── build.yml
+│   │   ├── test.yml
+│   │   └── publish.yml
+│   └── ISSUE_TEMPLATE.md
+│
+├── README.md
+├── LICENSE
+└── Aleo.DotNet.sln
 
 Copilot should preserve this structure.
 
