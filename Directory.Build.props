@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>latestMajor</LangVersion>
   </PropertyGroup>
 </Project>

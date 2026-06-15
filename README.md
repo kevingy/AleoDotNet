@@ -2,15 +2,15 @@
 
 **The official .NET ecosystem for the Aleo blockchain — SDK, wallet, cryptographic engine, and developer tools.**
 
-AleoDotNet provides a complete, modern, and high‑performance .NET interface to the Aleo zero‑knowledge blockchain.  
-It includes:
+AleoDotNet aims to provide a complete, modern, and high‑performance .NET interface to the Aleo zero‑knowledge blockchain.  
+Planned components include:
 
-- A Rust‑based native cryptographic engine  
-- A safe and minimal P/Invoke interop layer  
-- Strongly‑typed Aleo primitives  
-- A full RPC client for interacting with Aleo nodes  
-- A secure wallet implementation  
-- A high‑level SDK for building Aleo applications in C#  
+- A Rust‑based native cryptographic engine (planned)  
+- A safe and minimal P/Invoke interop layer (planned)
+- Strongly‑typed Aleo primitives (scaffolded)  
+- A full RPC client for interacting with Aleo nodes (planned)  
+- A secure wallet implementation (planned)  
+- A high‑level SDK for building Aleo applications in C# (planned)
 
 AleoDotNet is designed for long‑term stability, clarity, and developer experience — enabling .NET developers to build private, verifiable applications on Aleo with confidence.
 
@@ -58,7 +58,7 @@ Aleo.Tests/       # Test suite
 
 ### Prerequisites
 
-- .NET 8 or later  
+- .NET 10 or later  
 - Rust (latest stable)  
 - Cargo  
 - Visual Studio 2022 or VS Code  
@@ -76,28 +76,21 @@ dotnet test
 ```
 
 ## Roadmap
-[ ] Rust engine ABI definition
-
-[ ] P/Invoke interop layer
-
-[ ] Aleo primitives
-
-[ ] RPC client
-
-[ ] Wallet implementation
-
-[ ] High‑level SDK
-
-[ ] Developer templates
-
-[ ] Documentation site
+- [ ] Rust engine ABI definition
+- [ ] P/Invoke interop layer
+- [ ] Aleo primitives
+- [ ] RPC client
+- [ ] Wallet implementation
+- [ ] High‑level SDK
+- [ ] Developer templates
+- [ ] Documentation site
 
 ## License
 AleoDotNet is licensed under the Apache License 2.0, matching the Aleo ecosystem.
 
 ## Contributing
 Contributions are welcome!
-Please see copilot-instructions.md and CONTRIBUTING.md (coming soon) for guidelines.
+Please see .github/copilot-instructions.md and CONTRIBUTING.md (coming soon) for guidelines.
 
 ## Status
 🚧 Active Development  
