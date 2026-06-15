@@ -40,17 +40,95 @@ AleoDotNet is designed for long‑term stability, clarity, and developer experie
 
 ## Repository Structure
 
-AleoDotNet/
-rust-engine/        # Native Rust cryptographic engine
-src/
-Aleo.Primitives/  # Core Aleo types
-Aleo.Crypto/      # FFI bindings + safe wrappers
-Aleo.Rpc/         # RPC client
-Aleo.Wallet/      # Wallet + transaction logic
-Aleo.Sdk/         # High-level SDK façade
-tests/
-Aleo.Tests/       # Test suite
-
+aleo-dotnet-sdk/
+│
+├── src/
+│   ├── Aleo.Primitives/
+│   │   ├── Address.cs
+│   │   ├── PrivateKey.cs
+│   │   ├── ViewKey.cs
+│   │   ├── Record.cs
+│   │   ├── Transaction.cs
+│   │   └── Aleo.Primitives.csproj
+│   │
+│   ├── Aleo.Crypto/
+│   │   ├── IAleoCryptoEngine.cs
+│   │   ├── RustAleoCryptoEngine.cs
+│   │   ├── NativeMethods.cs
+│   │   ├── Interop/
+│   │   │   ├── aleo_dotnet_engine.h
+│   │   │   ├── win-x64/
+│   │   │   │   └── aleo_dotnet_engine.dll
+│   │   │   ├── linux-x64/
+│   │   │   │   └── libaleo_dotnet_engine.so
+│   │   │   └── osx-arm64/
+│   │   │       └── libaleo_dotnet_engine.dylib
+│   │   └── Aleo.Crypto.csproj
+│   │
+│   ├── Aleo.Rpc/
+│   │   ├── IAleoRpcClient.cs
+│   │   ├── AleoRpcClient.cs
+│   │   ├── Models/
+│   │   │   ├── Block.cs
+│   │   │   ├── RpcRecord.cs
+│   │   │   ├── RpcTransaction.cs
+│   │   │   └── RpcError.cs
+│   │   └── Aleo.Rpc.csproj
+│   │
+│   ├── Aleo.Wallet/
+│   │   ├── AleoWallet.cs
+│   │   ├── WalletConfig.cs
+│   │   ├── WalletFactory.cs
+│   │   └── Aleo.Wallet.csproj
+│   │
+│   ├── Aleo.Sdk/
+│   │   ├── AleoSdk.cs
+│   │   ├── AleoConfig.cs
+│   │   ├── DependencyInjection.cs
+│   │   └── Aleo.Sdk.csproj
+│   │
+│   └── Directory.Build.props
+│
+├── rust-engine/
+│   ├── Cargo.toml
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── keygen.rs
+│   │   ├── address.rs
+│   │   ├── transfer.rs
+│   │   └── errors.rs
+│   └── build.sh
+│
+├── tests/
+│   ├── Aleo.Primitives.Tests/
+│   ├── Aleo.Crypto.Tests/
+│   ├── Aleo.Rpc.Tests/
+│   ├── Aleo.Wallet.Tests/
+│   └── Aleo.Sdk.Tests/
+│
+├── samples/
+│   ├── ConsoleWallet/
+│   │   ├── Program.cs
+│   │   └── ConsoleWallet.csproj
+│   └── WebApiDemo/  (optional)
+│
+├── docs/
+│   ├── getting-started.md
+│   ├── architecture.md
+│   ├── rpc-reference.md
+│   ├── crypto-engine.md
+│   └── wallet-guide.md
+│
+├── .github/
+│   ├── workflows/
+│   │   ├── build.yml
+│   │   ├── test.yml
+│   │   └── publish.yml
+│   └── ISSUE_TEMPLATE.md
+│
+├── README.md
+├── LICENSE
+└── Aleo.DotNet.sln
 
 ---
 
