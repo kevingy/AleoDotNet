@@ -2,6 +2,9 @@
 // TODO: Expand error types based on actual cryptographic operations
 
 use std::fmt;
+use std::cell::RefCell;
+use std::ffi::CString;
+use std::os::raw::c_char;
 
 /// Represents errors that can occur in the cryptographic engine
 #[derive(Debug, Clone, PartialEq)]
@@ -90,28 +93,6 @@ impl From<AleoError> for AleoErrorCode {
     }
 }
 
-thread_local! {
-    static LAST_ERROR: std::cell::RefCell<String> = std::cell::RefCell::new(String::new());
-}
-
-/// Set the last error message (for FFI error reporting)
-pub fn set_last_error(err: &AleoError) {
-    LAST_ERROR.with(|last_error| {
-        *last_error.borrow_mut() = err.to_string();
-    });
-}
-
-/// Get the last error message as a C string
-#[no_mangle]
-pub extern "C" fn aleo_last_error_message() -> *const std::os::raw::c_char {
-    LAST_ERROR.with(|last_error| {
-        let error_str = last_error.borrow();
-        std::ffi::CString::new(error_str.as_str())
-            .unwrap_or_else(|_| std::ffi::CString::new("Invalid error message").unwrap())
-            .into_raw()
-    })
-}
-
 /// Free a string allocated by Rust
 #[no_mangle]
 pub extern "C" fn aleo_free_string(ptr: *mut std::os::raw::c_char) {
@@ -121,3 +102,27 @@ pub extern "C" fn aleo_free_string(ptr: *mut std::os::raw::c_char) {
         }
     }
 }
+
+thread_local! {
+    static LAST_ERROR: RefCell<Option<CString>> = RefCell::new(None);
+}
+
+pub fn set_last_error(err: &AleoError) {
+    LAST_ERROR.with(|slot| {
+        let msg = err.to_string();
+        *slot.borrow_mut() = CString::new(msg).ok();
+    });
+}
+
+#[no_mangle]
+pub extern "C" fn aleo_get_last_error() -> *const c_char {
+    LAST_ERROR.with(|slot| {
+        if let Some(ref cstr) = *slot.borrow() {
+            cstr.as_ptr()
+        } else {
+            std::ptr::null()
+        }
+    })
+}
+
+

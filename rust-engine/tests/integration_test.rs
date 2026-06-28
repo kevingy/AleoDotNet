@@ -2,11 +2,11 @@
 // TODO: Add comprehensive integration tests
 
 use aleo_dotnet_engine::{
-    AleoAddress, AleoPrivateKey, AleoTransaction, AleoViewKey,
+    AleoAddress, AleoPrivateKey, AleoRecord, AleoTransaction, AleoViewKey,
     aleo_address_from_string, aleo_address_to_string,
     aleo_build_transfer, aleo_decrypt_record, aleo_derive_address,
     aleo_derive_view_key, aleo_encrypt_record, aleo_free_address,
-    aleo_free_private_key, aleo_free_string, aleo_free_transaction,
+    aleo_free_private_key, aleo_free_record, aleo_free_string, aleo_free_transaction,
     aleo_free_view_key, aleo_generate_private_key,
     AleoErrorCode,
 };
@@ -102,39 +102,39 @@ fn test_transfer_building() {
 
 #[test]
 fn test_record_encryption_decryption() {
-    // TODO: Test record encryption/decryption once implemented
+    // Encrypt is still a placeholder; decrypt now does real decryption.
+    // Placeholder encrypted data is not valid ciphertext, so decrypt fails with CryptoError.
     let mut view_key: *mut AleoViewKey = std::ptr::null_mut();
     let mut private_key: *mut AleoPrivateKey = std::ptr::null_mut();
     aleo_generate_private_key(&mut private_key);
     aleo_derive_view_key(private_key, &mut view_key);
-    
+
+    let mut encrypted: *mut std::os::raw::c_char = std::ptr::null_mut();
+
+    // Encrypt placeholder still works (returns "encrypted:...")
     let recipient_str = std::ffi::CString::new("aleo1recipient").unwrap();
     let mut recipient: *mut AleoAddress = std::ptr::null_mut();
     aleo_address_from_string(recipient_str.as_ptr(), &mut recipient);
-    
+
     let plaintext = std::ffi::CString::new("plaintext record").unwrap();
-    let mut encrypted: *mut std::os::raw::c_char = std::ptr::null_mut();
-    let result = aleo_encrypt_record(recipient, plaintext.as_ptr(), &mut encrypted);
-    assert_eq!(result, AleoErrorCode::Success);
-    
-    let mut decrypted: *mut std::os::raw::c_char = std::ptr::null_mut();
-    let result = aleo_decrypt_record(view_key, encrypted, &mut decrypted);
-    assert_eq!(result, AleoErrorCode::Success);
-    
+    let encrypt_result = aleo_encrypt_record(
+        recipient,
+        plaintext.as_ptr(),
+        &mut encrypted,
+    );
+    assert_eq!(encrypt_result, AleoErrorCode::Success);
+    assert!(!encrypted.is_null());
+    aleo_free_address(recipient);
+
+    // Decrypt with real implementation: placeholder ciphertext is invalid
+    let mut decrypted: *mut AleoRecord = std::ptr::null_mut();
+    let decrypt_result = aleo_decrypt_record(view_key, encrypted, &mut decrypted);
+    assert_eq!(decrypt_result, AleoErrorCode::CryptoError);
+    assert!(decrypted.is_null());
+
     // Clean up
-    if !private_key.is_null() {
-        aleo_free_private_key(private_key);
-    }
-    if !view_key.is_null() {
-        aleo_free_view_key(view_key);
-    }
-    if !recipient.is_null() {
-        aleo_free_address(recipient);
-    }
-    if !encrypted.is_null() {
-        aleo_free_string(encrypted);
-    }
-    if !decrypted.is_null() {
-        aleo_free_string(decrypted);
-    }
+    aleo_free_private_key(private_key);
+    aleo_free_view_key(view_key);
+    aleo_free_record(decrypted);
+    aleo_free_string(encrypted);
 }
