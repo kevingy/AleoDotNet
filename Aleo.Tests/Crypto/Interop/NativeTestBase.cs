@@ -1,0 +1,44 @@
+using System.Runtime.InteropServices;
+using Aleo.Crypto.Interop;
+
+namespace Aleo.Tests.Crypto.Interop;
+
+public abstract class NativeTestBase
+{
+    private static readonly bool s_nativeAvailable;
+    private static readonly string? s_nativeLibPath;
+
+    static NativeTestBase()
+    {
+        var rustDir = Path.Combine(
+            AppContext.BaseDirectory, "..", "..", "..", "..",
+            "rust-engine", "target", "debug");
+
+        s_nativeLibPath = Directory.Exists(rustDir)
+            ? Path.GetFullPath(Path.Combine(rustDir, "aleo_dotnet_engine.dll"))
+            : null;
+
+        s_nativeAvailable = File.Exists(s_nativeLibPath);
+
+        if (s_nativeAvailable)
+        {
+            NativeLibrary.SetDllImportResolver(
+                typeof(AleoNative).Assembly,
+                (name, assembly, path) =>
+                {
+                    if (name == "aleo_dotnet_engine" && s_nativeLibPath is not null)
+                        return NativeLibrary.Load(s_nativeLibPath);
+                    return IntPtr.Zero;
+                });
+        }
+    }
+
+    protected static void SkipIfNativeMissing()
+    {
+        if (!s_nativeAvailable)
+            Assert.Skip(
+                $"Native library not found. Build the Rust engine first: " +
+                $"expected at {s_nativeLibPath}");
+    }
+
+}

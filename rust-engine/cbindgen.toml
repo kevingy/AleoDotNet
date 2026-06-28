@@ -1,0 +1,20 @@
+[export]
+include = ["src/ffi"]
+
+[fn]
+prefix = "aleo_"
+postfix = ""
+
+[struct]
+derive_eq = true
+derive_neq = true
+derive_lt = true
+derive_lte = true
+derive_gt = true
+derive_gte = true
+
+[enum]
+prefix_with_name = true
+derive_helper_methods = true
+derive_const_casts = true
+derive_mut_casts = true
