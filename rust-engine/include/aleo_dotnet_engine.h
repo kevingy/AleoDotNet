@@ -103,14 +103,11 @@ typedef struct AleoViewKey {
 } AleoViewKey;
 
 /**
- * Get the last error message as a C string
- */
-const char *aleo_last_error_message(void);
-
-/**
  * Free a string allocated by Rust
  */
 void aleo_free_string(char *ptr);
+
+const char *aleo_get_last_error(void);
 
 /**
  * Allocate memory of a given size
@@ -261,17 +258,17 @@ enum AleoErrorCode aleo_sign_transaction(const struct AleoPrivateKey *private_ke
  * # Arguments
  * * `view_key` - The view key for decryption
  * * `encrypted_record` - The encrypted record data (as a string)
- * * `out_decrypted_record` - Pointer to receive the allocated decrypted record string
+ * * `out_decrypted_record` - Pointer to receive the allocated `AleoRecord`
  *
  * # Returns
  * Error code (0 on success)
  *
  * # Safety
- * Caller must free the string using aleo_free_string
+ * Caller must free the returned `AleoRecord` using `aleo_free_record`
  */
 enum AleoErrorCode aleo_decrypt_record(const struct AleoViewKey *view_key,
                                        const char *encrypted_record,
-                                       char **out_decrypted_record);
+                                       struct AleoRecord **out_decrypted_record);
 
 /**
  * Encrypt a record
@@ -290,5 +287,23 @@ enum AleoErrorCode aleo_decrypt_record(const struct AleoViewKey *view_key,
 enum AleoErrorCode aleo_encrypt_record(const struct AleoAddress *recipient,
                                        const char *plaintext_record,
                                        char **out_encrypted_record);
+
+/**
+ * Convert a record to a JSON string
+ *
+ * The record data bytes are expected to be valid UTF-8 JSON content
+ * (e.g. from a prior call to `aleo_decrypt_record`).
+ *
+ * # Arguments
+ * * `record` - Pointer to an `AleoRecord`
+ * * `out_string` - Pointer to receive the allocated JSON string
+ *
+ * # Returns
+ * Error code (0 on success)
+ *
+ * # Safety
+ * Caller must free the returned string using `aleo_free_string`
+ */
+enum AleoErrorCode aleo_record_to_json(const struct AleoRecord *record, char **out_string);
 
 #endif /* ALEO_DOTNET_ENGINE_H */

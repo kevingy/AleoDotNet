@@ -27,6 +27,7 @@ pub use ffi::{
     // Record operations
     aleo_decrypt_record,
     aleo_encrypt_record,
+    aleo_record_to_json,
     
     // Memory management
     aleo_alloc,
@@ -42,7 +43,7 @@ pub use ffi::{
     aleo_free_view_key,
     
     // Error handling
-    aleo_last_error_message,
+    aleo_get_last_error,
 };
 
 // Re-export error codes
