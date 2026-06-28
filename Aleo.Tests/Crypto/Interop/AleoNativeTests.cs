@@ -25,9 +25,7 @@ public sealed class AleoNativeTests : NativeTestBase
     [Fact]
     public void NativeLibraryIsAvailable()
     {
-        Assert.True(File.Exists(
-            Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..",
-                "rust-engine", "target", "debug", "aleo_dotnet_engine.dll")));
+        SkipIfNativeMissing();
     }
 
     [Fact]

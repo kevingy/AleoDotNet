@@ -14,8 +14,12 @@ public abstract class NativeTestBase
             AppContext.BaseDirectory, "..", "..", "..", "..",
             "rust-engine", "target", "debug");
 
+        var libName = OperatingSystem.IsWindows()
+            ? "aleo_dotnet_engine.dll"
+            : "libaleo_dotnet_engine.so";
+
         s_nativeLibPath = Directory.Exists(rustDir)
-            ? Path.GetFullPath(Path.Combine(rustDir, "aleo_dotnet_engine.dll"))
+            ? Path.GetFullPath(Path.Combine(rustDir, libName))
             : null;
 
         s_nativeAvailable = File.Exists(s_nativeLibPath);
@@ -33,6 +37,10 @@ public abstract class NativeTestBase
         }
     }
 
+    protected static bool NativeLibraryAvailable => s_nativeAvailable;
+
+    protected static string? NativeLibraryPath => s_nativeLibPath;
+
     protected static void SkipIfNativeMissing()
     {
         if (!s_nativeAvailable)
@@ -40,5 +48,4 @@ public abstract class NativeTestBase
                 $"Native library not found. Build the Rust engine first: " +
                 $"expected at {s_nativeLibPath}");
     }
-
 }
