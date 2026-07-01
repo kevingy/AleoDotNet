@@ -40,6 +40,7 @@ AleoDotNet is designed for long‑term stability, clarity, and developer experie
 
 ## Repository Structure
 
+```text
 aleo-dotnet-sdk/
 │
 ├── src/
@@ -129,6 +130,7 @@ aleo-dotnet-sdk/
 ├── README.md
 ├── LICENSE
 └── Aleo.DotNet.sln
+```
 
 ---
 
