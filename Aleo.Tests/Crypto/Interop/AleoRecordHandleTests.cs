@@ -23,6 +23,8 @@ public sealed class AleoRecordHandleTests : NativeTestBase
     [Fact]
     public void RecordToJson_NullRecordHandle_ReturnsInvalidInput()
     {
+        SkipIfNativeMissing();
+
         using var handle = new AleoRecordHandle();
 
         var result = AleoNative.aleo_record_to_json(handle, out _);

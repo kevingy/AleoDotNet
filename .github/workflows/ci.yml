@@ -22,6 +22,26 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build Rust engine
+        run: cargo build --manifest-path rust-engine/Cargo.toml
+
+      - name: Verify Rust tests pass (fail-fast)
+        run: |
+          if ! cargo test --manifest-path rust-engine/Cargo.toml --all-targets; then
+            echo "Rust tests failed. Stopping pipeline before .NET restore/build/test."
+            exit 1
+          fi
+
+      - name: Verify Rust engine artifact
+        run: |
+          test -f rust-engine/target/debug/libaleo_dotnet_engine.so || {
+            echo "Missing rust-engine artifact: rust-engine/target/debug/libaleo_dotnet_engine.so"
+            exit 1
+          }
+
       - name: Restore
         run: dotnet restore AleoDotNet.sln
 

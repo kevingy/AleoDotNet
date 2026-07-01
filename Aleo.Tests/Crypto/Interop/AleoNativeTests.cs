@@ -103,6 +103,8 @@ public sealed class AleoNativeTests : NativeTestBase
     [Fact]
     public void AleoDecryptRecord_DefaultViewKey_ReturnsInvalidInput()
     {
+        SkipIfNativeMissing();
+
         using var viewKey = new AleoViewKeyHandle();
 
         var result = AleoNative.aleo_decrypt_record(viewKey, "encrypted", out _);
@@ -161,6 +163,8 @@ public sealed class AleoNativeTests : NativeTestBase
     [Fact]
     public void FreeString_NullPtr_DoesNotThrow()
     {
+        SkipIfNativeMissing();
+
         AleoNative.aleo_free_string(IntPtr.Zero);
     }
 
